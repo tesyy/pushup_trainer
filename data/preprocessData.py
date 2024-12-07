@@ -6,7 +6,8 @@ def preprocess(video, output, fps=12, width=720, height=1280):
         stream = ffmpeg.input(video)
         stream = stream.filter('fps', fps=fps, round='up')
         
-        out = f"pushup_processed/{output}"
+        out = f"train_processed/{output}"
+        
         stream = ffmpeg.output(stream, out)
         
         ffmpeg.run(stream, quiet=False)
@@ -17,10 +18,10 @@ def preprocess(video, output, fps=12, width=720, height=1280):
 
 if __name__ == "__main__":
     # Ensure the output directory exists
-    os.makedirs("pushup_processed", exist_ok=True)
+    os.makedirs("train_processed", exist_ok=True)
 
     # Get list of processed and raw files
-    processed = sorted(os.listdir("pushup_processed"))
+    processed = sorted(os.listdir("train_processed"))
     raw = sorted(os.listdir("pushup_raw"))
 
     # Determine the starting count

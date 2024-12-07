@@ -3,7 +3,8 @@ import os
 import pandas as pd
 
 # Path to the directory containing the processed pushup videos
-video_directory = 'data/pushup_processed/'
+# video_directory = 'data/pushup_processed/'
+video_directory = 'data/test_processed/'
 
 # List all video files in the directory
 video_names = sorted(os.listdir(video_directory))
@@ -89,7 +90,7 @@ cv2.destroyAllWindows()
 annotations_df = pd.DataFrame(annotations)
 
 # Save to CSV file
-output_file = 'data/labels.csv'
+output_file = 'data/test_labels.csv'
 annotations_df.to_csv(output_file, sep=',', index=False)
 
 print(f"Annotations saved to {output_file}.")
