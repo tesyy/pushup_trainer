@@ -33,7 +33,7 @@ def run_pushup_posture_detection():
     """
     camera = VideoCamera()  
     # cap = camera.video
-    cap = cv2.VideoCapture("data/untrained_data/sagging_back_06.mp4")
+    cap = cv2.VideoCapture("data/test_processed/000_correct_form.mp4")
 
     output_name = ['c', 'e', 'b', 'h']  # Labels: correct, elbows, back, head
 
