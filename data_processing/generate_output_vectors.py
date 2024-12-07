@@ -5,7 +5,7 @@ import pandas as pd
 
 def get_total_frames(video_name):
     # Construct the filename with the correct pattern
-    filename = f"data/pushup_processed/{video_name}.mp4"  # Full name, e.g., "000_correct_form.mp4"
+    filename = f"data/test_processed/{video_name}.mp4"  # Full name, e.g., "000_correct_form.mp4"
     print(f"Attempting to open: {filename}")
     
     if not os.path.exists(filename):
@@ -34,7 +34,7 @@ form_mapping = {
 }
 
 # Read labels from CSV file
-with open('./data/labels.csv') as csv_file:
+with open('./data/test_labels.csv') as csv_file:
     csv_reader = csv.reader(csv_file, delimiter=',')
     line_count = 0
     
@@ -56,7 +56,7 @@ with open('./data/labels.csv') as csv_file:
     print(f'Processed {line_count} lines.')
 
 # Open the output file for writing
-file = open("./data/output_vectors.csv", "w")
+file = open("./data/test_output_vectors.csv", "w")
 frame_number = 0
 
 # Process each row (video info) from the labels file
@@ -98,8 +98,8 @@ file.close()
 # After generating the output_vectors.csv, we filter it based on input_vectors.csv
 
 # Read input_vectors.csv and output_vectors.csv
-input_df = pd.read_csv('data/input_vectors.csv', header=None)
-output_df = pd.read_csv('data/output_vectors.csv', header=None)
+input_df = pd.read_csv('data/test_input_vectors.csv', header=None)
+output_df = pd.read_csv('data/test_output_vectors.csv', header=None)
 
 # Extract the first two columns (the matching criteria) from input
 input_set = set(zip(input_df[0], input_df[1]))
@@ -111,6 +111,6 @@ filtered_output_df = output_df[output_df.apply(lambda row: (row[0], row[1]) in i
 filtered_output_df[0] = filtered_output_df[0].apply(lambda x: str(x).zfill(3))
 
 # Overwrite the output_vectors.csv with the filtered content
-filtered_output_df.to_csv('data/output_vectors.csv', index=False, header=False)
+filtered_output_df.to_csv('data/test_output_vectors.csv', index=False, header=False)
 
-print("Filtered output saved to 'output_vectors.csv'")
+print("Filtered output saved to 'test_output_vectors.csv'")

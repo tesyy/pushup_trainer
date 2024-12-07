@@ -3,8 +3,8 @@ import numpy as np
 
 
 def get_data():
-    output_vectors = open('./data/output_vectors.csv')
-    input_vectors = open('./data/input_vectors.csv')
+    output_vectors = open('./data/test_output_vectors.csv')
+    input_vectors = open('./data/test_input_vectors.csv')
 
     output_reader = csv.reader(output_vectors, delimiter=',')
     input_reader = csv.reader(input_vectors, delimiter=',')
@@ -14,7 +14,7 @@ def get_data():
     inputs = []
 
     # Open the text file to write the output
-    with open('./data/data_matrices.txt', 'w') as txt_file:
+    with open('./data/test_data_matrices.txt', 'w') as txt_file:
         for outl in output_reader:
             line_count += 1
             if outl[-1] == '1':  # Assuming the last element is '1' for skipping
