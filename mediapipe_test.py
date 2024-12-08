@@ -1,16 +1,18 @@
 import cv2
 import mediapipe as mp
-import depth_params as dp
+import PushupPosture_ver1 as pp
 import numpy as np
 from utils import *
+import tensorflow as tf
 
 mp_drawing = mp.solutions.drawing_utils
 mp_pose = mp.solutions.pose
 #fourcc = cv2.VideoWriter_fourcc(*'XVID')
 #out = cv2.VideoWriter('output.avi', cv2.VideoWriter_fourcc(*'MJPG'), 20.0, (720, 1000))
 # For video input:
-cap = cv2.VideoCapture("data/pushup_processed/000_correct_form.mp4")
+cap = cv2.VideoCapture("data/correct.mp4")
 #cap = cv2.VideoCapture(0)
+model = tf.keras.models.load_model("working_model_1.keras")
 
 with mp_pose.Pose(
         min_detection_confidence=0.5,
@@ -34,18 +36,21 @@ with mp_pose.Pose(
         image.flags.writeable = True
         image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
 
+        #Resize the frame
         image_hight, image_width, _ = image.shape
         image_hight = 720
         image_width = 1000
         image = cv2.resize(image, (image_width, image_hight))
-        params = dp.get_params(results)
+        params = pp.get_params(results)
+        #flat_params = np.reshape(params, (1, 6))
+        #output = model.predict(params)
         print(params)
-        left_angle = params[2] if len(params) > 1 else 0
-        right_angle = params[3] if len(params) > 2 else 0
-        left_elbow_corx = int(params[4][0]*image_width) if left_angle > 0 else 0
-        left_elbow_cory = int(params[4][1]*image_hight) if right_angle > 0 else 0
-        right_elbow_corx = int(params[5][0]*image_width) if left_angle > 0 else 0
-        right_elbow_cory = int(params[5][1]*image_hight) if right_angle > 0 else 0
+        left_angle = params[0] if len(params) > 1 else 0
+        right_angle = params[1] if len(params) > 2 else 0
+        left_elbow_corx = int(params[2]*image_width) if left_angle > 0 else 0
+        left_elbow_cory = int(params[3]*image_hight) if right_angle > 0 else 0
+        right_elbow_corx = int(params[4]*image_width) if left_angle > 0 else 0
+        right_elbow_cory = int(params[5]*image_hight) if right_angle > 0 else 0
         elbow_angle = int((left_angle+right_angle)/2)
         nomalized = 600/180 + 0.5
         color, word = ((0, 255, 0), "Deep Enough") if elbow_angle < 80 and elbow_angle > 0 else ((0, 0, 255), "Not Deep Enough")
